@@ -1,0 +1,20 @@
+/*
+  # Security Headers
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # Required for Web Audio API
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Opener-Policy: same-origin
+  
+  # Cache Control
+  Cache-Control: public, max-age=3600, s-maxage=3600
+
+/*.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: public, max-age=86400, s-maxage=86400
+
+/*.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: public, max-age=3600, s-maxage=3600

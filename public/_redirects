@@ -1,0 +1,4 @@
+# Cloudflare Pages redirects and rewrites
+
+# Redirect any URL that doesn't exist to the main page
+/* /index.html 404

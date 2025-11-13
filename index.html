@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Sound Frequency Generator</title>
+    <meta name="description" content="Advanced Sound Frequency Generator For Setting Custom Frequencies, Wave Types, Envelope, Decay, Attack, Modulation, Filter, and More">
+    <meta name="favicon" content="favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #111111 0%, #593038 50%,#2D2D2D 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(25 25 25 / 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-align: center;
+            color:  #EF7291DC;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 58px;
+            text-shadow: 0 0 10px rgba(27 19 19 / 0.5);
+            letter-spacing: -2.96px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            background: #434343;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #474747;
+        }
+
+        .control-group h3 {
+            color: #E0E0E0;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #BFBFBF;
+            font-size: 14px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .range-value {
+            text-align: center;
+            color: #EA669B;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #2E2E2E;
+            border-radius: 1px;
+            background: #2E2E2E;
+            color: #FFB0C7;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #111111;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #EA667E 0%, #EF7291 100%);
+            color: black;
+            border-radius: 0px;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0px 0px rgba(255 138 138 / 0.4);
+            background: linear-gradient(135deg, #FB939A 0%, #f5576c 100%);
+        }
+
+        .play-btn.playing {
+            background: linear-gradient(135deg, #FB939A 0%, #f5576c 100%);
+        }
+
+        .stop-btn {
+            background: #414141;
+            color: silver;
+
+            border-radius: 0px;
+        }
+
+        .stop-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);            border-radius: 0px;
+        
+
+        }
+
+        .preset-btn {
+            background: #2E2E2E;
+            color: palevioletred;
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+
+        .preset-btn:hover {
+            background: #C4C4C4;
+        }
+
+        .visualizer {
+            background: #38383800;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 200px;
+            display: block;
+
+        }
+
+        .info-panel {
+            background: #1F1F1F00;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .info-panel h3 {
+            color: #9B9B9B;
+            font-size: 24px;
+            letter-spacing: -.5px;
+            margin-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .info-item {
+            background: #1F1F1F;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #B99D9D;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #EA6680;
+        }
+
+        .presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            background: #2E2E2E;
+            color: #FFB0C7;
+            padding: 8px;
+            border: 1px solid #2D2B2C;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>(Not) Sound Frequency Generator</h1>
+
+        <div class="presets">
+            <button class="preset-btn" onclick="loadPreset('meditation')">Meditation (7.83 Hz)</button>
+            <button class="preset-btn" onclick="loadPreset('alpha')">Alpha Waves (10 Hz)</button>
+            <button class="preset-btn" onclick="loadPreset('beta')">Beta Waves (20 Hz)</button>
+            <button class="preset-btn" onclick="loadPreset('a440')">A440 Tuning</button>
+            <button class="preset-btn" onclick="loadPreset('c256')">C256 Scientific</button>
+        </div>
+
+        <div class="controls-grid">
+            <div class="control-group">
+                <h3>Frequency Control</h3>
+                <label for="frequency">Frequency (Hz)</label>
+                <input type="range" id="frequency" min="0.5" max="1000" value="440" step="0.5">
+                <div class="range-value" id="frequencyValue">440.0 Hz</div>
+                <input type="number" id="frequencyInput" min="0.5" max="1000" value="440" step="0.1">
+            </div>
+
+            <div class="control-group">
+                <h3>Waveform</h3>
+                <label for="waveform">Wave Type</label>
+                <select id="waveform">
+                    <option value="sine">Sine Wave</option>
+                    <option value="square">Square Wave</option>
+                    <option value="sawtooth">Sawtooth Wave</option>
+                    <option value="triangle">Triangle Wave</option>
+                </select>
+                <br><br>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="enableNoise">
+                    <label for="enableNoise">Mix with Noise</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>Volume & Gain</h3>
+                <label for="volume">Master Volume</label>
+                <input type="range" id="volume" min="0" max="100" value="30">
+                <div class="range-value" id="volumeValue">30%</div>
+            </div>
+
+            <div class="control-group">
+                <h3>Modulation</h3>
+                <label for="modFreq">LFO Frequency (Hz)</label>
+                <input type="range" id="modFreq" min="0" max="20" value="0" step="0.1">
+                <div class="range-value" id="modFreqValue">0.0 Hz</div>
+                
+                <label for="modDepth">LFO Depth</label>
+                <input type="range" id="modDepth" min="0" max="100" value="0">
+                <div class="range-value" id="modDepthValue">0%</div>
+            </div>
+
+            <div class="control-group">
+                <h3>Filter</h3>
+                <label for="filterType">Filter Type</label>
+                <select id="filterType">
+                    <option value="none">None</option>
+                    <option value="lowpass">Low Pass</option>
+                    <option value="highpass">High Pass</option>
+                    <option value="bandpass">Band Pass</option>
+                    <option value="notch">Notch</option>
+                </select>
+                
+                <label for="filterFreq">Cutoff Frequency</label>
+                <input type="range" id="filterFreq" min="20" max="20000" value="1000">
+                <div class="range-value" id="filterFreqValue">1000 Hz</div>
+            </div>
+
+            <div class="control-group">
+                <h3>Envelope</h3>
+                <label for="attack">Attack (s)</label>
+                <input type="range" id="attack" min="0" max="2" value="0.1" step="0.01">
+                <div class="range-value" id="attackValue">0.10 s</div>
+                
+                <label for="decay">Decay (s)</label>
+                <input type="range" id="decay" min="0" max="2" value="0.1" step="0.01">
+                <div class="range-value" id="decayValue">0.10 s</div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Play</button>
+            <button class="stop-btn" onclick="stopAll()">■ Stop</button>
+        </div>
+
+        <div class="visualizer">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="info-panel">
+ 
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Frequency</div>
+                    <div class="info-value" id="infoFreq">440 Hz</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Note</div>
+                    <div class="info-value" id="infoNote">A4</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Period</div>
+                    <div class="info-value" id="infoPeriod">2.27 ms</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Wavelength</div>
+                    <div class="info-value" id="infoWavelength">78.4 cm</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="sound-generator.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "sound-generator",
+  "version": "1.0.0",
+  "description": "Advanced Sound Frequency Generator - Web App",
+  "main": "index.html",
+  "homepage": "./",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "npm run clean && npm run copy-files",
+    "clean": "rm -rf dist/",
+    "copy-files": "mkdir -p dist && cp index.html sound-generator.js dist/ && cp -r public/* dist/ 2>/dev/null || true",
+    "preview": "cd dist && python3 -m http.server 8000",
+    "deploy": "npm run build",
+    "serve": "npm run dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sound",
+    "frequency",
+    "generator",
+    "audio",
+    "music",
+    "web-app",
+    "web-audio-api"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
