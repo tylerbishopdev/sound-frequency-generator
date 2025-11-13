@@ -1,0 +1,17 @@
+{
+    "name": "Sound Frequency Generator",
+    "short_name": "Sound Gen",
+    "description": "Advanced Sound Frequency Generator with real-time visualization",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "16x16 32x32 48x48",
+            "type": "image/x-icon"
+        }
+    ],
+    "theme_color": "#EF7291",
+    "background_color": "#111111",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait"
+}
